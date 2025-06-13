@@ -155,10 +155,9 @@ const About = () => {
             <p>
               Fast-forward to today, and I’ve had the privilege of working at{' '}
               <a href="https://azuralabs.id">a software house</a>,{' '}
-              <a href="https://elabramsystems.com/">a tech-based HR solutions</a>,{' '}
-              <a href="https://www.govtechedu.id/">a government startup for education</a>, and{' '}
-              <a href="https://kickavenue.com/">a sneakers marketplace</a>. My main focus these days
-              is building robust and scalable software solution at{' '}
+              <a href="https://elabramsystems.com/">a tech-based HR solutions</a>, and{' '}
+              <a href="https://www.govtechedu.id/">a government startup for education</a>,{' '}
+              My main focus these days is building robust and scalable software solution at{' '}
               <a href="https://accenture.com/"> Accenture Indonesia</a> for one of the biggest
               Telecom company in Indonesia.
             </p>
