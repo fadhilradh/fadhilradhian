@@ -21,6 +21,7 @@ port-and-paperwork design direction is built rather than re-pitched.
 | `apps/web` — landing page with the live manifest board, browse with URL-synced filters | done       |
 | Deploy config — Netlify (web), Fly.io `sin` (api + worker)                             | done       |
 | Better Auth, listings CRUD, R2 uploads, faceted search in Postgres                     | phases 1–3 |
+| Bilingual trade-news page, refreshed every 12h — [spec](./docs/news-feed.md)           | phase 7    |
 
 ## Running it
 
