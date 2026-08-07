@@ -3,6 +3,21 @@
 # Set "Base directory" to `niaga` in the Netlify site settings; Netlify then
 # reads this file rather than the repository root (which belongs to the personal
 # site already deployed from this repo).
+#
+# ─── The API hostname appears in FOUR places and all four must agree ─────────
+# Fly app names are globally unique, so `niaga-api` may already be taken and you
+# may have to pick another. If you do, change every one of these or the app will
+# fail in a way that looks like a backend outage:
+#
+#   1. `app = ` in apps/api/fly.toml
+#   2. VITE_API_URL in all three [context.*.environment] blocks below
+#   3. connect-src in the Content-Security-Policy header below  ← the silent one:
+#      the browser blocks the fetch before it leaves, so CORS and env vars look
+#      correct while every request fails
+#   4. CORS_ORIGINS on the API (a Fly secret), which must contain this site's
+#      own origin — set it after the Netlify URL exists
+#
+# See docs/deploy.md.
 
 [build]
   command = "pnpm turbo run build --filter=@niaga/web"
