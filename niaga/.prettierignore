@@ -1,8 +1,0 @@
-node_modules
-dist
-.turbo
-pnpm-lock.yaml
-
-# Drizzle owns these — reformatting the snapshot makes future diffs unreadable
-# and the journal is written by drizzle-kit on every generate.
-packages/db/migrations

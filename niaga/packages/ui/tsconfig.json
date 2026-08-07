@@ -1,4 +1,0 @@
-{
-  "extends": "@niaga/config/tsconfig/react.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
-}
