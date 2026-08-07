@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+@import '@niaga/ui/styles.css';
+
+/* Workspace packages live under node_modules via symlink, which Tailwind skips
+ * by default. Point it at the design system's source so the utilities used
+ * inside @niaga/ui are generated. */
+@source '../../../packages/ui/src';

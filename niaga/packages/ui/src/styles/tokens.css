@@ -1,0 +1,233 @@
+/*
+ * Niaga design tokens.
+ *
+ * Grounded in the port and its paperwork: tally sheets, container stencils,
+ * customs lane signage. Not "modern SaaS", and deliberately not the warm
+ * cream-and-terracotta "artisanal export" look.
+ *
+ * The consuming app imports Tailwind first, then this file:
+ *   @import 'tailwindcss';
+ *   @import '@niaga/ui/styles.css';
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Raw values ─────────────────────────────────────────────────────────────
+ * Light mode is daytime paperwork: a cool grey-green tally sheet.
+ * Dark mode is the night shift at the port: deep harbor blue-black.
+ * Dark is a separate design, not an inversion.
+ */
+:root {
+  color-scheme: light;
+
+  --ink: #0e1b26;
+  --ink-muted: #4c5f6b;
+  --ink-faint: #7d8c94;
+
+  --surface: #e9ece8;
+  --surface-sunk: #dfe3de;
+  --card: #fbfcfa;
+
+  --lane-green: #0f6e63;
+  --lane-green-soft: #d8e6e3;
+  --lane-amber: #a06d0c;
+  --lane-amber-soft: #f0e5c8;
+  --lane-red: #a8342a;
+  --lane-red-soft: #f0dcd9;
+
+  --rule: #c6cdc6;
+  --rule-strong: #a6b0a7;
+
+  /* Text that sits on a filled lane colour. */
+  --on-lane: #fbfcfa;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --ink: #e4e9ec;
+  --ink-muted: #9aa9b2;
+  --ink-faint: #6d7f8a;
+
+  --surface: #0e1b26;
+  --surface-sunk: #0a141d;
+  --card: #16242f;
+
+  --lane-green: #2a9d8f;
+  --lane-green-soft: #14342f;
+  --lane-amber: #d9a521;
+  --lane-amber-soft: #372a10;
+  --lane-red: #c4483b;
+  --lane-red-soft: #371916;
+
+  --rule: #263742;
+  --rule-strong: #3a4e5b;
+
+  --on-lane: #0a141d;
+}
+
+/* ── Tailwind theme ─────────────────────────────────────────────────────────
+ * `inline` so the utilities resolve to var() references and therefore follow
+ * the .dark class at runtime rather than being frozen at build time.
+ */
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-surface: var(--surface);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-card: var(--card);
+
+  --color-lane-green: var(--lane-green);
+  --color-lane-green-soft: var(--lane-green-soft);
+  --color-lane-amber: var(--lane-amber);
+  --color-lane-amber-soft: var(--lane-amber-soft);
+  --color-lane-red: var(--lane-red);
+  --color-lane-red-soft: var(--lane-red-soft);
+
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-on-lane: var(--on-lane);
+}
+
+@theme {
+  /* Archivo carries a `wdth` axis; the expanded cut is what reads like painted
+   * port signage. Applied through the `signage` utility below. */
+  --font-display: 'Archivo', 'Archivo Expanded', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* 12 / 14 / 16 / 20 / 28 / 40 / 64 — no other sizes exist. */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.3rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.55rem;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.75rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 2.5rem;
+  --text-2xl--line-height: 2.6rem;
+  --text-3xl: 4rem;
+  --text-3xl--line-height: 4rem;
+
+  --tracking-display: -0.03em;
+  --tracking-body: 0.005em;
+  --tracking-stencil: 0.08em;
+
+  /* Crates and forms have corners, not pills. */
+  --radius-crate: 2px;
+
+  --animate-flap: flap 220ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  --animate-settle: settle 320ms ease-out both;
+}
+
+@keyframes flap {
+  0% {
+    transform: rotateX(-90deg);
+    opacity: 0;
+  }
+  60% {
+    transform: rotateX(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────────*/
+
+/** Display face: Archivo at its expanded width, set tight. Port signage. */
+@utility signage {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 125;
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+}
+
+/** Stencilled block lettering, as sprayed on a crate. */
+@utility stencil {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: var(--tracking-stencil);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/** Any surface where numbers stack in a column. */
+@utility tally {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'zero' 1;
+}
+
+/** Hairline instead of a shadow — the only separator this design uses. */
+@utility hairline-b {
+  border-bottom: 1px solid var(--rule);
+}
+
+@utility hairline-t {
+  border-top: 1px solid var(--rule);
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────────*/
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--rule);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    letter-spacing: var(--tracking-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Focus lands on the green lane, always visible, never removed. */
+  :focus-visible {
+    outline: 2px solid var(--lane-green);
+    outline-offset: 2px;
+    border-radius: var(--radius-crate);
+  }
+
+  ::selection {
+    background-color: var(--lane-green);
+    color: var(--on-lane);
+  }
+
+  /* One orchestrated motion moment (the manifest board) and nothing else.
+   * Users who ask for less get none. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

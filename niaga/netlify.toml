@@ -1,0 +1,53 @@
+# Netlify site config for apps/web.
+#
+# Set "Base directory" to `niaga` in the Netlify site settings; Netlify then
+# reads this file rather than the repository root (which belongs to the personal
+# site already deployed from this repo).
+
+[build]
+  command = "pnpm turbo run build --filter=@niaga/web"
+  publish = "apps/web/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Netlify detects pnpm from pnpm-lock.yaml and installs the whole workspace;
+  # turbo then builds only what @niaga/web depends on.
+  PNPM_VERSION = "10.33.0"
+
+[context.production.environment]
+  VITE_API_URL = "https://niaga-api.fly.dev"
+
+[context.deploy-preview.environment]
+  VITE_API_URL = "https://niaga-api.fly.dev"
+
+[context.branch-deploy.environment]
+  VITE_API_URL = "https://niaga-api.fly.dev"
+
+# Vite SPA: every unmatched path is the app shell, not a 404 from the CDN.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    # Fonts come from Google; the API is the only other origin the app talks to.
+    # script-src allows inline because index.html resolves the theme before first
+    # paint — swap to a nonce or hash when that script stops changing.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://niaga-api.fly.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+# Hashed assets are immutable; the shell is not.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
